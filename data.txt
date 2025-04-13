@@ -1,0 +1,3 @@
+# Instagram Login Data for Study
+# Format: Username/Email | Login Time | Status
+# ----------------------------------------
