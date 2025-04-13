@@ -220,10 +220,36 @@
             input.addEventListener('input', validateForm);
         });
 
-        form.addEventListener('submit', (e) => {
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            // Handle form submission here
-            alert('Login functionality would be implemented here');
+            submitButton.disabled = true;
+            
+            const email = form.querySelector('input[type="text"]').value;
+            const password = form.querySelector('input[type="password"]').value;
+            
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Store the token and redirect or update UI
+                    localStorage.setItem('token', data.token);
+                    window.location.href = '/dashboard.html';
+                } else {
+                    alert(data.error || 'Login failed');
+                }
+            } catch (error) {
+                alert('An error occurred during login');
+            } finally {
+                submitButton.disabled = false;
+            }
         });
     </script>
 </body>
